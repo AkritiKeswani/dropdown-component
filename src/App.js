@@ -5,11 +5,16 @@ import Dropdown from "./Dropdown";
 
 const App = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const options = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"];
+  const options = [
+    "Oliver Hansen 1",
+    "Van Henry",
+    "April Tucker",
+    "Ralph Hubbard",
+  ];
 
   return (
     <div className="App">
-      <h1>Dropdown Component</h1>
+      <h1>Reusable Dropdown Component!</h1>
       <Dropdown
         options={options}
         selectedOptions={selectedOptions}

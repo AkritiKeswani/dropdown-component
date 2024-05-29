@@ -12,7 +12,6 @@ const Dropdown = ({
   placeholder,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [filteredOptions, setFilteredOptions] = useState(options);
   const containerRef = useRef(null);
 
   const handleOptionClick = (option) => {
@@ -52,7 +51,7 @@ const Dropdown = ({
       </div>
       {isOpen && (
         <ul className="dropdown-list">
-          {filteredOptions.map((option) => (
+          {options.map((option) => (
             <li
               key={option}
               className={`dropdown-item ${
@@ -60,6 +59,11 @@ const Dropdown = ({
               }`}
               onClick={() => handleOptionClick(option)}
             >
+              <input
+                type="checkbox"
+                checked={selectedOptions.includes(option)}
+                readOnly
+              />
               {option}
             </li>
           ))}
