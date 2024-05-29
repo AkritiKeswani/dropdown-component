@@ -2,23 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./Dropdown.css";
 
-const Dropdown = () => {
+const Dropdown = ({ options, onOptionSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const dropdownRef = useRef(null);
-
-  const dropdownOptions = [
-    {
-      id: 1,
-      label: "Mazda Miata",
-      value: "mazda-miata",
-    },
-    {
-      id: 2,
-      label: "Subaru WRX",
-      value: "subaru-wrx",
-    },
-  ];
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -26,6 +13,7 @@ const Dropdown = () => {
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
+    onOptionSelect(option);
     setIsOpen(false);
   };
 
@@ -44,14 +32,14 @@ const Dropdown = () => {
 
   return (
     <div className="dropdown" ref={dropdownRef}>
-      <button className="toggle" onClick={handleToggle}>
+      <button className="dropdown-toggle" onClick={handleToggle}>
         {selectedOption ? selectedOption.label : "Select an option"}
       </button>
       {isOpen && (
         <ul className="dropdown-menu">
-          {dropdownOptions.map((option) => (
+          {options.map((option) => (
             <li
-              key={option.id}
+              key={option.value}
               className="dropdown-item"
               onClick={() => handleOptionClick(option)}
             >
@@ -67,13 +55,11 @@ const Dropdown = () => {
 Dropdown.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
       label: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired,
     })
-  ),
-  selectedOption: PropTypes.object,
-  onOptionSelect: PropTypes.func,
+  ).isRequired,
+  onOptionSelect: PropTypes.func.isRequired,
 };
 
 export default Dropdown;
