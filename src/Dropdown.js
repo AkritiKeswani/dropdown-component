@@ -1,49 +1,66 @@
+// src/Dropdown.js
+
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./Dropdown.css";
 
-const Dropdown = ({ options, onOptionSelect }) => {
+const Dropdown = ({
+  options,
+  selectedOptions,
+  onChange,
+  multiSelect,
+  placeholder,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const dropdownRef = useRef(null);
-
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
-  };
+  const [filteredOptions, setFilteredOptions] = useState(options);
+  const containerRef = useRef(null);
 
   const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    onOptionSelect(option);
-    setIsOpen(false);
+    if (multiSelect) {
+      if (selectedOptions.includes(option)) {
+        onChange(selectedOptions.filter((item) => item !== option));
+      } else {
+        onChange([...selectedOptions, option]);
+      }
+    } else {
+      onChange([option]);
+      setIsOpen(false);
+    }
   };
 
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  const handleDocumentClick = (event) => {
+    if (containerRef.current && !containerRef.current.contains(event.target)) {
       setIsOpen(false);
     }
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleDocumentClick);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleDocumentClick);
     };
   }, []);
 
   return (
-    <div className="dropdown" ref={dropdownRef}>
-      <button className="dropdown-toggle" onClick={handleToggle}>
-        {selectedOption ? selectedOption.label : "Select an option"}
-      </button>
+    <div className="dropdown" ref={containerRef}>
+      <div className="dropdown-header" onClick={() => setIsOpen(!isOpen)}>
+        {selectedOptions.length > 0
+          ? multiSelect
+            ? selectedOptions.join(", ")
+            : selectedOptions[0]
+          : placeholder}
+      </div>
       {isOpen && (
-        <ul className="dropdown-menu">
-          {options.map((option) => (
+        <ul className="dropdown-list">
+          {filteredOptions.map((option) => (
             <li
-              key={option.value}
-              className="dropdown-item"
+              key={option}
+              className={`dropdown-item ${
+                selectedOptions.includes(option) ? "selected" : ""
+              }`}
               onClick={() => handleOptionClick(option)}
             >
-              {option.label}
+              {option}
             </li>
           ))}
         </ul>
@@ -53,13 +70,17 @@ const Dropdown = ({ options, onOptionSelect }) => {
 };
 
 Dropdown.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onOptionSelect: PropTypes.func.isRequired,
+  options: PropTypes.array.isRequired,
+  selectedOptions: PropTypes.array,
+  onChange: PropTypes.func.isRequired,
+  multiSelect: PropTypes.bool,
+  placeholder: PropTypes.string,
+};
+
+Dropdown.defaultProps = {
+  selectedOptions: [],
+  multiSelect: false,
+  placeholder: "Select...",
 };
 
 export default Dropdown;
