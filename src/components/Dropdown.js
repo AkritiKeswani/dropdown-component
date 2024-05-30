@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./Dropdown.css";
 
-//DropdownItem accounts for different options in the menu:
+//Accounting for different options in the menu
 const DropdownItem = ({ label, isSelected, onClick }) => (
   <li className="dropdown-item" onClick={onClick}>
     <input type="checkbox" checked={isSelected} readOnly />
@@ -39,7 +39,7 @@ const Dropdown = ({
         ? selectedOptions.filter((item) => item !== optionValue)
         : [...selectedOptions, optionValue]
       : [optionValue];
-    //onChange prop to have state changes - > controlled component
+    //onChange prop to have state changes -> controlled component
     onChange(updatedSelectedOptions);
     if (!multiSelect) setIsOpen(false);
   };
@@ -54,7 +54,7 @@ const Dropdown = ({
 
   //for items on scroll
   const handleScroll = () => {
-    const itemHeight = 35; // Height of each item
+    const itemHeight = 35;
     const newVisibleStart = Math.floor(listRef.current.scrollTop / itemHeight);
     setVisibleStart(newVisibleStart);
     setVisibleEnd(newVisibleStart + 10);
