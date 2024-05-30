@@ -17,7 +17,7 @@ const App = () => {
       <Dropdown
         options={options}
         selectedOptions={selectedOptions}
-        // Pass onChange prop to handle state changes -> controlled component
+        /* Pass onChange prop to handle state changes -> controlled component */
         onChange={setSelectedOptions}
         multiSelect
         placeholder="Select options..."

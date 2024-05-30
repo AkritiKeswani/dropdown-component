@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./Dropdown.css";
 
-//Accounting for different options in the menu
+/* Accounting for different options in the menu */
 const DropdownItem = ({ label, isSelected, onClick }) => (
   <li className="dropdown-item" onClick={onClick}>
     <input type="checkbox" checked={isSelected} readOnly />
@@ -32,19 +32,19 @@ const Dropdown = ({
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  //single & multi select options
+  /* for single & multi-select options */
   const handleOptionClick = (optionValue) => {
     const updatedSelectedOptions = multiSelect
       ? selectedOptions.includes(optionValue)
         ? selectedOptions.filter((item) => item !== optionValue)
         : [...selectedOptions, optionValue]
       : [optionValue];
-    //onChange prop to have state changes -> controlled component
+    /* onChange prop to have state changes -> controlled component */
     onChange(updatedSelectedOptions);
     if (!multiSelect) setIsOpen(false);
   };
 
-  //single & multi select options
+  /* single & multi select options */
   const handleSelectAll = () => {
     const updatedSelectedOptions =
       selectedOptions.length === options.length
@@ -53,7 +53,7 @@ const Dropdown = ({
     onChange(updatedSelectedOptions);
   };
 
-  //for items on scroll
+  /* for items on scroll */
   const handleScroll = () => {
     const itemHeight = 35;
     const newVisibleStart = Math.floor(listRef.current.scrollTop / itemHeight);
@@ -134,7 +134,8 @@ Dropdown.propTypes = {
       label: PropTypes.string.isRequired,
     })
   ).isRequired,
-  selectedOptions: PropTypes.array.isRequired, //prop -> controlled component
+  selectedOptions:
+    PropTypes.array.isRequired /* prop -> controlled component */,
   onChange: PropTypes.func.isRequired,
   multiSelect: PropTypes.bool,
   placeholder: PropTypes.string,
