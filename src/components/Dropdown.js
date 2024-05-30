@@ -32,7 +32,7 @@ const Dropdown = ({
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  //Accounting for single & multi select options
+  //single & multi select options
   const handleOptionClick = (optionValue) => {
     const updatedSelectedOptions = multiSelect
       ? selectedOptions.includes(optionValue)
@@ -44,6 +44,7 @@ const Dropdown = ({
     if (!multiSelect) setIsOpen(false);
   };
 
+  //single & multi select options
   const handleSelectAll = () => {
     const updatedSelectedOptions =
       selectedOptions.length === options.length
